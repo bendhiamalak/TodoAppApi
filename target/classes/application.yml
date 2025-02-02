@@ -1,0 +1,13 @@
+server:
+  port: 1234
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    url: jdbc:postgresql://localhost:5433/todoDB
+    username: postgres
+    password: malek
+    driverClassName: org.postgresql.Driver

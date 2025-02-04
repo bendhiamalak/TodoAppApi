@@ -2,15 +2,16 @@ package com.Malek.todo.services.impl;
 
 import com.Malek.todo.dto.CategoryDto;
 import com.Malek.todo.exception.ErrorCodes;
+
 import com.Malek.todo.exception.InvalidEntityException;
 import com.Malek.todo.repositories.CategoryRepository;
 import com.Malek.todo.services.CategoryService;
 import com.Malek.todo.validators.CategoryValidator;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.Malek.todo.exception.EntityNotFoundException;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,30 +40,43 @@ public class CategoryServiceImpl implements CategoryService {
                 .collect(Collectors.toList());
     }
 
+
+
     @Override
     public CategoryDto findById(Long id) {
-        if (id == null){
+        if (id == null) {
             log.error("Category id is null");
-            return null;
+            throw new InvalidEntityException("Category ID cannot be null", ErrorCodes.CATEGORY_NOT_VALID);
         }
-        return categoryRepository.findById(id).map(CategoryDto::fromEntity)
-                .orElseThrow(()-> new EntityNotFoundException("No Category found with ID = "+id,ErrorCodes.USER_NOT_FOUND));
+
+        return categoryRepository.findById(id)
+                .map(CategoryDto::fromEntity)
+                .orElseThrow(() -> new EntityNotFoundException("No Category found with ID = " + id, ErrorCodes.CATEGORY_NOT_FOUND));
     }
 
     @Override
-    public List<CategoryDto> findAllByUserId(long userId) {
-        return CategoryRepository.findCategoryByUserId(userId).stream()
+    public List<CategoryDto> findAllByUserId(Long userId) {
+        return categoryRepository.findCategoryByUserId(userId).stream()
                 .map(CategoryDto::fromEntity)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public void delete(long id) {
-
+    public void delete(Long id) {
+        if (id == null) {
+            log.error("Category id is null");
+            return;
+        }
+        categoryRepository.deleteById(id);
     }
 
     @Override
     public List<CategoryDto> getAllTodoByCategoriesForToday(Long userId) {
-        return List.of();
+
+        return categoryRepository.getAllTodoByCategoriesForToday(ZonedDateTime.now().withHour(0).withMinute(0),
+                ZonedDateTime.now().withHour(23).withMinute(59), userId)
+                .stream()
+                .map(CategoryDto :: fromEntity)
+                .collect(Collectors.toList());
     }
 }

@@ -23,7 +23,7 @@ public class Category implements Serializable {
 
     private String description;
 
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name="userId")
     @JsonIgnore
     private User user;

@@ -1,24 +1,36 @@
 package com.Malek.todo.controllers.api;
 
 import com.Malek.todo.dto.CategoryDto;
+import com.Malek.todo.dto.TodoDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequestMapping("/api/cat")
 public interface CategoryApi {
 
-    public ResponseEntity<CategoryDto>createCategory(CategoryDto categoryDto);
+    @PostMapping
+    ResponseEntity<CategoryDto> createCategory(@RequestBody CategoryDto categoryDto);
 
-    public ResponseEntity<CategoryDto> updateCategory(CategoryDto categoryDto);
-    public ResponseEntity<List<CategoryDto>> getAllCategories();
+    @PutMapping("/{id}")
+    ResponseEntity<CategoryDto> updateCategory(@PathVariable Long id, @RequestBody CategoryDto categoryDto);
 
-    public ResponseEntity<List<CategoryDto>> getAllTodoByCategoriesId(Long id);
+    @GetMapping
+    ResponseEntity<List<CategoryDto>> getAllCategories();
 
-    public ResponseEntity<List<CategoryDto>> getAllCategoriesByUserId(Long id);
+    @GetMapping("/todos/{categoryId}")
+    ResponseEntity<List<TodoDto>> getAllTodoByCategoriesId(@PathVariable Long categoryId);
 
-    public ResponseEntity<CategoryDto> getCategory(Long id);
-    public ResponseEntity deleteCategory(Long id);
+    @GetMapping("/user/{userId}")
+    ResponseEntity<List<CategoryDto>> getAllCategoriesByUserId(@PathVariable Long userId);
 
-    public ResponseEntity<List<CategoryDto>> getAllTodoByCategoriesForToday(long userId);
+    @GetMapping("/{id}")
+    ResponseEntity<CategoryDto> getCategory(@PathVariable Long id);
 
+    @DeleteMapping("/{id}")
+    ResponseEntity<Void> deleteCategory(@PathVariable Long id);
+
+    @GetMapping("/todos/today/{userId}")
+    ResponseEntity<List<CategoryDto>> getAllTodoByCategoriesForToday(@PathVariable Long userId);
 }

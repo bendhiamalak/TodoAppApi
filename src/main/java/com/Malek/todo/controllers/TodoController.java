@@ -1,5 +1,6 @@
 package com.Malek.todo.controllers;
 
+import com.Malek.todo.controllers.api.TodoApi;
 import com.Malek.todo.dto.TodoDto;
 import com.Malek.todo.services.CategoryService;
 import com.Malek.todo.services.TodoService;
@@ -7,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,12 +25,12 @@ public class TodoController implements TodoApi {
     private CategoryService categoryService;
 
     @Override
-    public ResponseEntity<TodoDto> createTodo(TodoDto userDto) {
+    public ResponseEntity<TodoDto> createTodo(@RequestBody TodoDto userDto) {
         return new ResponseEntity<>(todoService.save(userDto), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<TodoDto> updateTodo(TodoDto todoDto) {
+    public ResponseEntity<TodoDto> updateTodo(@PathVariable Long id, @RequestBody TodoDto todoDto) {
         return new ResponseEntity<>(todoService.save(todoDto), HttpStatus.CREATED);
     }
 
@@ -37,12 +40,13 @@ public class TodoController implements TodoApi {
     }
 
     @Override
-    public ResponseEntity<TodoDto> getTodo(Long todoId) {
+    public ResponseEntity<TodoDto> getTodo(@PathVariable Long todoId) {
         return  new ResponseEntity<>(todoService.findById(todoId), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity deleteTodo(Long id) {
-        return null;
+    public ResponseEntity<Void> deleteTodo(@PathVariable Long todoId) {
+        todoService.delete(todoId);
+        return ResponseEntity.noContent().build();
     }
 }

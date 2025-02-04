@@ -1,8 +1,5 @@
 package com.Malek.todo.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,12 +11,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-
+@Table(name = "app_user")
 public class User implements Serializable {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     private String firstName;
     private String lastName;
@@ -29,4 +26,6 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "user")
     private List<Category> category;
+
+
 }

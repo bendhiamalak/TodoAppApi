@@ -1,18 +1,20 @@
 package com.Malek.todo.services.impl;
 
 import com.Malek.todo.dto.UserDto;
+import com.Malek.todo.exception.EntityNotFoundException;
 import com.Malek.todo.exception.ErrorCodes;
 import com.Malek.todo.exception.InvalidEntityException;
 import com.Malek.todo.repositories.UserRepository;
 import com.Malek.todo.services.UserService;
 import com.Malek.todo.validators.UserValidator;
-import jakarta.persistence.EntityNotFoundException;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.Malek.todo.dto.UserDto.toEntity;
@@ -63,11 +65,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto login(UserDto user) {
+        if (user == null || user.getEmail() == null || user.getPassword() == null) {
+            throw new InvalidEntityException("Email and Password must not be null", ErrorCodes.USER_NOT_VALID);
+        }
+
         List<String> errors = UserValidator.validateUserCredential(user.getEmail(), user.getPassword());
         if (!errors.isEmpty()) {
             throw new InvalidEntityException("User is not valid", ErrorCodes.USER_NOT_VALID, errors);
         }
-        return userRepository.findUserByEmailAndPassword(user.getEmail(), user.getPassword())
+
+        return Optional.ofNullable(userRepository.findUserByEmailAndPassword(user.getEmail(), user.getPassword()))
                 .map(UserDto::fromEntity)
                 .orElseThrow(() -> new EntityNotFoundException("No user found with Email = " + user.getEmail() + " and Password = <HIDDEN_PASSWORD>", ErrorCodes.USER_NOT_FOUND));
     }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,7 +19,7 @@ public class AuthController implements AuthApi {
     private UserService userService;
 
     @Override
-    public ResponseEntity<UserDto> login(UserDto user) {
+    public ResponseEntity<UserDto> login(@RequestBody UserDto user) {
         return new ResponseEntity<>(userService.login(user), HttpStatus.OK);
     }
 

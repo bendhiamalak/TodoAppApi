@@ -1,7 +1,8 @@
 package com.Malek.todo.handlers;
 
+import com.Malek.todo.exception.EntityNotFoundException;
 import com.Malek.todo.exception.InvalidEntityException;
-import jakarta.persistence.EntityNotFoundException;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

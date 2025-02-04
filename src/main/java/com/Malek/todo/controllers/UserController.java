@@ -48,4 +48,4 @@ public class UserController implements UserApi {
     }
 }
 
-}
+

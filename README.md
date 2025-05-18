@@ -12,9 +12,8 @@ A scalable and modular RESTful API powering a task management web application. B
 - 🛡️ **Global exception handling** and input validation
 - 📄 **Swagger UI documentation** auto-generated for 100% of the API
 - 🔄 **CORS configured** for seamless frontend integration
-- ⏱️ Optimized for **<150ms response time** under load
-- 🧪 **Tested endpoints** with Postman and JMeter
-- 💾 Uses **PostgreSQL** in production and **H2** for dev/testing
+- 🧪 **Tested endpoints** with Postman 
+- 💾 Uses **PostgreSQL**
 
 ---
 
